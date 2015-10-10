@@ -41,14 +41,60 @@ namespace MTmonitor
         public Int32 diskspace; // HDD残容量(MB)
     }
 
+    public struct MT_Soft_Status
+    {
+        public int id;            // ID ラベル番号
+        public string soft_name;  // IP address
+        public string pc_name;    // PC name
+        public PC_STATE pc_state; // PCの状態
+    }
+    
+    public struct MT_PC_DATA
+    {
+        public int    id;         // ID ラベル番号
+        public string ip;         // IP address
+        public string pc_name;    // PC name
+        public PC_STATE pc_state; // PCの状態
+    }
+
+    public enum PC_STATE
+    {
+        OK,
+        NG
+    }
+
+    public enum MT_MON_ID
+    {
+        AFP,         //0
+        KV1000MT2,   //1
+        KV1000SpCam, //2
+        FSI2,
+        MT3Fine,
+        MT3IDS,
+        PictureViewer,
+        MT3Wide,
+        MT3liva1=11,
+        MT3SF,
+        MT3NIR=15,
+        MT3analog=20
+    }
+
     public partial class Form1 : Form
     {
         //状態を表す定数
         const int OFF = 0;
         const int ON  = 1;
 
+        //Pingオブジェクト
+        System.Net.NetworkInformation.Ping mainPing = null;
+
         int mmFsiUdpPortMTmonitor = 24415;
-        private BackgroundWorker worker_udp;
+        private BackgroundWorker worker_udp, worker_ping;
+        public const int pc_max_number = 10;
+        MT_PC_DATA [] ping_pc_data = new MT_PC_DATA[pc_max_number] ;
+        int ping_id     = 1;
+        int ping_id_max = 6;
+
         public Form1()
         {
             InitializeComponent();
@@ -58,6 +104,13 @@ namespace MTmonitor
             worker_udp.WorkerSupportsCancellation = true;
             worker_udp.DoWork += new DoWorkEventHandler(worker_udp_DoWork);
             worker_udp.ProgressChanged += new ProgressChangedEventHandler(worker_udp_ProgressChanged);
+
+            // ping用
+            worker_ping = new BackgroundWorker();
+            worker_ping.WorkerReportsProgress = true;
+            worker_ping.WorkerSupportsCancellation = true;
+            worker_ping.DoWork += new DoWorkEventHandler(worker_ping_DoWork);
+            worker_ping.ProgressChanged += new ProgressChangedEventHandler(worker_ping_ProgressChanged);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -67,6 +120,7 @@ namespace MTmonitor
             //DriveInfo cDrive = new DriveInfo("C");
             //MessageBox.Show(cDrive.TotalFreeSpace.ToString());
         }
+
         #region UDP
         // 別スレッド処理（UDP） //IP 192.168.1.211
         private void worker_udp_DoWork(object sender, DoWorkEventArgs e)
@@ -213,10 +267,10 @@ namespace MTmonitor
                         label.ForeColor = Color.Black;
                     }
                     break;
-                case 3: //FSI2
-                    label = label_FSI2;
+                case 3: //NUV
+                    label = label_NUV;
                     timer_FSI2.Stop(); timer_FSI2.Start();
-                    label.Text = "FSI2\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "MT3_NUV\n" + (kmd3.diskspace).ToString() + "GB";
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -265,7 +319,7 @@ namespace MTmonitor
                     break;
                 case 5: //MT3IDS
                     timer_MT3IDS.Stop(); timer_MT3IDS.Start();
-                    label_MT3IDS.Text="MT3_IDS\n"+ (kmd3.diskspace).ToString() +"GB";
+                    label_MT3IDS.Text="MT3_LrSpcam\n"+ (kmd3.diskspace).ToString() +"GB";
                     if (kmd3.obs == 0)
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -285,31 +339,6 @@ namespace MTmonitor
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label_MT3IDS.ForeColor = Color.Black;
-                    }
-                    break;
-                case 6: //PictureViewer
-                    label = label_PictureViewer;
-                    timer_PictureViewer.Stop(); timer_PictureViewer.Start();
-                    label.Text = "PictureViewer\n" + (kmd3.diskspace).ToString() + "GB";
-                    if (kmd3.obs == 0)
-                    {
-                        label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
-                        label.ForeColor = Color.Black;
-                    }
-                    else if (kmd3.obs == 1)
-                    {
-                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
-                        label.ForeColor = Color.Black;
-                    }
-                    else
-                    {
-                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
-                        label.ForeColor = Color.Red;
-                    }
-                    if (kmd3.diskspace <= 10)
-                    {
-                        label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
-                        label.ForeColor = Color.Black;
                     }
                     break;
                 case 7: //MT3Wide
@@ -336,7 +365,85 @@ namespace MTmonitor
                         label_MT3Wide.ForeColor = Color.Black;
                     }
                     break;
-                   
+
+                case (int)MT_MON_ID.MT3SF:
+                    label = label_SF;
+                    timer_PictureViewer.Stop(); timer_PictureViewer.Start();
+                    label.Text = "MT3SF\n" + (kmd3.diskspace).ToString() + "GB";
+                    if (kmd3.obs == 0)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else if (kmd3.obs == 1)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Red;
+                    }
+                    if (kmd3.diskspace <= 10)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    break;
+
+ 
+                case (int)MT_MON_ID.MT3NIR: //15
+                    label = label_NIR;
+                    timer_PictureViewer.Stop(); timer_PictureViewer.Start();
+                    label.Text = "MT3NIR\n" + (kmd3.diskspace).ToString() + "GB";
+                    if (kmd3.obs == 0)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else if (kmd3.obs == 1)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Red;
+                    }
+                    if (kmd3.diskspace <= 10)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    break;
+                
+                case (int)MT_MON_ID.MT3analog: //20
+                    label = label_AnalogCamera;
+                    timer_PictureViewer.Stop(); timer_PictureViewer.Start();
+                    label.Text = "MT3 Analog\n" + (kmd3.diskspace).ToString() + "GB";
+                    if (kmd3.obs == 0)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else if (kmd3.obs == 1)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Red;
+                    }
+                    if (kmd3.diskspace <= 10)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    break;
 
             }
         }
@@ -389,12 +496,149 @@ namespace MTmonitor
         }
 
         #endregion
+        #region Ping
+        void worker_ping_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker bw = sender as BackgroundWorker;
+
+            MT_PC_DATA mt_pc_data = (MT_PC_DATA)e.Argument;
+
+            //Pingオブジェクトの作成
+            if (mainPing == null)
+            {
+                mainPing = new System.Net.NetworkInformation.Ping();
+            }
+            //Pingを送信する
+            System.Net.NetworkInformation.PingReply reply = mainPing.Send(mt_pc_data.ip);
+            //結果を取得
+            string st;
+            if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+            {
+                mt_pc_data.pc_state = PC_STATE.OK;
+                st = string.Format("Reply from {0}:bytes={1} time={2}ms TTL={3}",
+                    reply.Address, reply.Buffer.Length,
+                    reply.RoundtripTime, reply.Options.Ttl);
+            }
+            else
+            {
+                mt_pc_data.pc_state = PC_STATE.NG;
+                st = string.Format("Ping送信に失敗。({0})", reply.Status);
+            }
+            //string str = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff") + " IP:" + remoteEP.Address + " Port:" + remoteEP.Port + " Size:" + rcvBytes.Length;
+            this.Invoke(new dlgSetString(ShowLabel), new object[] { label1, st });
+            //mainPing.Dispose();
+
+            bw.ReportProgress(0, mt_pc_data);
+            if (bw.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+        }
+                //メインスレッドでの処理
+        private void worker_ping_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // 画面表示
+            ping_pc_data[ping_id] = (MT_PC_DATA)e.UserState;
+            MT_PC_DATA mpd = (MT_PC_DATA)e.UserState;
+            string st;
+
+            switch (ping_id)
+            {
+                case 1: //SC440
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        panel1.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        panel1.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 2: //I5-3450
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        groupBox1.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        groupBox1.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 3: //TX100S3
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label5.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label5.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 4: //TX100S3-B
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label4.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label4.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 5: //MJ34LL
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label6.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label6.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 6: //HP6200SFF1
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label2.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label2.BackColor = SystemColors.Control;
+                    }
+                    break;
+                case 7: //KV1000 (MT3)
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label7.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label7.BackColor = SystemColors.Control;
+                    }
+                    break;
+
+            }
+            if (++ping_id > ping_id_max )
+            {
+                ping_id = 1;
+            }
+        }
+            
+        #endregion
 
         #region Timer
         private void button1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("D:\\usr\\python\\dist\\MT3FileMove.exe");
-            //System.Diagnostics.Process.Start("mt3fm.bat");
+            string st = "D:\\usr\\python\\dist\\MT3FileMove.exe";
+            if (checkBoxUseDate.Checked)
+            {
+                string st_param = dateTimePicker1.Value.Year.ToString() + " " + dateTimePicker1.Value.Month.ToString() + " " + dateTimePicker1.Value.Day.ToString()+" "+numericUpDown1.Value.ToString();
+                System.Diagnostics.Process.Start(st,st_param);
+                //System.Diagnostics.Process.Start("mt3fm.bat");
+            }
+            else
+            {
+                //System.Diagnostics.Process.Start("D:\\usr\\python\\dist\\MT3FileMove.exe");
+                System.Diagnostics.Process.Start(st);
+            }
 
             //button1.Image = System.Drawing.Image.FromFile(@"Red_button.png");
             //label_KV1000MT2.Image  = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -412,7 +656,7 @@ namespace MTmonitor
 
         private void timer_PictureViewer_Tick(object sender, EventArgs e)
         {
-            label_PictureViewer.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            label_SF.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
         private void timer_AFP_Tick(object sender, EventArgs e)
@@ -432,14 +676,76 @@ namespace MTmonitor
 
         private void timer_FSI2_Tick(object sender, EventArgs e)
         {
-            label_FSI2.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            label_NUV.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
         private void timer_MT3Wide_Tick(object sender, EventArgs e)
         {
             label_MT3Wide.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
+        private void timer_11_Tick(object sender, EventArgs e)
+        {
+ //           label_11.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+        }
         #endregion
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //button2.Enabled = false;
+            MT_PC_DATA mpd;
+            mpd.id = 1;
+            mpd.ip = "192.168.1.206";
+            mpd.pc_name = "SC440";
+            mpd.pc_state = PC_STATE.NG;
+            worker_ping.RunWorkerAsync(mpd);
+        }
+
+        private void timerPcCheck_Tick(object sender, EventArgs e)
+        {
+            MT_PC_DATA mpd;
+            mpd.id = 1;
+            mpd.ip = "192.168.1.206";
+            mpd.pc_name = "SC440";
+            mpd.pc_state = PC_STATE.NG;
+            ping_pc_data[1] = mpd;
+
+            mpd.id = 2;
+            mpd.ip = "192.168.1.204";
+            mpd.pc_name = "I5-3450";
+            ping_pc_data[2] = mpd;
+
+            mpd.id = 3;
+            mpd.ip = "192.168.1.201";
+            mpd.pc_name = "TX100S3";
+            ping_pc_data[3] = mpd;
+
+            mpd.id = 4;
+            mpd.ip = "192.168.1.212";
+            mpd.pc_name = "TX100S3-B";
+            ping_pc_data[4] = mpd;
+
+            mpd.id = 5;
+            mpd.ip = "192.168.1.214";
+            mpd.pc_name = "MJ34LL";
+            ping_pc_data[5] = mpd;
+
+            mpd.id = 6;
+            mpd.ip = "192.168.1.216";
+            mpd.pc_name = "HP6200SFF1";
+            ping_pc_data[6] = mpd;
+
+            mpd.id = 7;
+            mpd.ip = "192.168.1.10";
+            mpd.pc_name = "KV1000-1";
+            ping_pc_data[7] = mpd;
+
+            worker_ping.RunWorkerAsync(ping_pc_data[ping_id]);
+        }
+
+        private void label_NIR_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe","2C-41-38-AF-89-2B");
+        }
+ 
     }
 }
