@@ -73,9 +73,10 @@ namespace MTmonitor
         MT3IDS,
         PictureViewer,
         MT3Wide,
-        MT3liva1=11,
-        MT3SF,
-        KV1000SpCam2,
+        MT3liva1=11,  //11
+        MT3SF,        //12
+        KV1000SpCam2, //13
+
         MT3NIR=15,
         MT3analog=20
     }
@@ -95,6 +96,9 @@ namespace MTmonitor
         MT_PC_DATA [] ping_pc_data = new MT_PC_DATA[pc_max_number] ;
         int ping_id     = 1;
         int ping_id_max = 6;
+
+        public const int soft_max_number = 32;
+        PC_STATE[] soft_alive_check = new PC_STATE[soft_max_number];
 
         public Form1()
         {
@@ -191,7 +195,7 @@ namespace MTmonitor
             string s = string.Format("[ID:{0} Obs:{1} Save:{2} Disk:{3}MB]\n", kmd3.id, kmd3.obs, kmd3.save, kmd3.diskspace);
             textBox1.Text = s;
             Label label = null;
-            switch(kmd3.id)
+            switch (kmd3.id)
             {
                 case 0: //AFP
                     label = label_AFP;
@@ -217,6 +221,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[0] = PC_STATE.OK;
                     break;
                 case 1: //KV1000MT2
                     label = label_KV1000MT2;
@@ -242,6 +247,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[1] = PC_STATE.OK;
                     break;
                 case 2: //KV1000SpCam
                     label = label_KV1000SpCam;
@@ -267,6 +273,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[2] = PC_STATE.OK;
                     break;
                 case (int)MT_MON_ID.KV1000SpCam2:
                     label = label8;
@@ -292,6 +299,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[(int)MT_MON_ID.KV1000SpCam2] = PC_STATE.OK;
                     break;
                 case 3: //NUV
                     label = label_NUV;
@@ -317,6 +325,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[3] = PC_STATE.OK;
                     break;
                 case 4: //MT3Fine
                     label = label_MT3Fine;
@@ -342,10 +351,11 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[4] = PC_STATE.OK;
                     break;
                 case 5: //MT3IDS
                     timer_MT3IDS.Stop(); timer_MT3IDS.Start();
-                    label_MT3IDS.Text="MT3_LrSpcam\n"+ (kmd3.diskspace).ToString() +"GB";
+                    label_MT3IDS.Text = "MT3_LrSpcam\n" + (kmd3.diskspace).ToString() + "GB";
                     if (kmd3.obs == 0)
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -360,12 +370,13 @@ namespace MTmonitor
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Green_button.png");
                         label_MT3IDS.ForeColor = Color.Red;
-                    }                
+                    }
                     if (kmd3.diskspace <= 10)
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label_MT3IDS.ForeColor = Color.Black;
                     }
+                    soft_alive_check[5] = PC_STATE.OK;
                     break;
                 case 7: //MT3Wide
                     timer_MT3Wide.Stop(); timer_MT3Wide.Start();
@@ -390,6 +401,7 @@ namespace MTmonitor
                         label_MT3Wide.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label_MT3Wide.ForeColor = Color.Black;
                     }
+                    soft_alive_check[7] = PC_STATE.OK;
                     break;
 
                 case (int)MT_MON_ID.MT3SF:
@@ -416,9 +428,10 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[(int)MT_MON_ID.MT3SF] = PC_STATE.OK;
                     break;
 
- 
+
                 case (int)MT_MON_ID.MT3NIR: //15
                     label = label_NIR;
                     timer_PictureViewer.Stop(); timer_PictureViewer.Start();
@@ -443,8 +456,9 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[(int)MT_MON_ID.MT3NIR] = PC_STATE.OK;
                     break;
-                
+
                 case (int)MT_MON_ID.MT3analog: //20
                     label = label_AnalogCamera;
                     timer_PictureViewer.Stop(); timer_PictureViewer.Start();
@@ -469,6 +483,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
                         label.ForeColor = Color.Black;
                     }
+                    soft_alive_check[(int)MT_MON_ID.MT3analog] = PC_STATE.OK;
                     break;
 
             }
@@ -566,7 +581,6 @@ namespace MTmonitor
             // 画面表示
             ping_pc_data[ping_id] = (MT_PC_DATA)e.UserState;
             MT_PC_DATA mpd = (MT_PC_DATA)e.UserState;
-            string st;
 
             switch (ping_id)
             {
@@ -712,7 +726,7 @@ namespace MTmonitor
  
         private void timer_KV1000SpCam2_Tick(object sender, EventArgs e)
         {
-            label_8.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            label8.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
         private void timer_FSI2_Tick(object sender, EventArgs e)
@@ -724,9 +738,15 @@ namespace MTmonitor
             label_MT3Wide.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
-        private void timer_11_Tick(object sender, EventArgs e)
+        private void timer_NIR_Tick(object sender, EventArgs e)
         {
- //           label_11.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            if (soft_alive_check[(int)MT_MON_ID.MT3analog] == PC_STATE.NG)
+            {
+                label_AnalogCamera.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            }
+            soft_alive_check[(int)MT_MON_ID.MT3analog] = PC_STATE.NG;
+
+            label_NIR.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
         #endregion
 
@@ -787,6 +807,19 @@ namespace MTmonitor
         private void label_NIR_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe","2C-41-38-AF-89-2B");
+            label1.Text = "MagicSend.exe HP8200SFF";
+        }
+
+        private void label_MT3IDS_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "00-19-99-D5-AD-01");
+            label1.Text = "MagicSend.exe TX100S3";
+        }
+
+        private void label_MT3Wide_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "00-19-99-D5-AD-01");
+            label1.Text = "MagicSend.exe TX100S3";
         }
 
  

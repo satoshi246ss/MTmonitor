@@ -48,7 +48,7 @@
             this.timer_KV1000MT2 = new System.Windows.Forms.Timer(this.components);
             this.label_MT3Wide = new System.Windows.Forms.Label();
             this.timer_MT3Wide = new System.Windows.Forms.Timer(this.components);
-            this.timer11 = new System.Windows.Forms.Timer(this.components);
+            this.timer_NIR = new System.Windows.Forms.Timer(this.components);
             this.label_AnalogCamera = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.checkBoxUseDate = new System.Windows.Forms.CheckBox();
@@ -58,6 +58,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.timerPcCheck = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@
             this.label_NIR = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.timer_KV1000SpCam2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -152,6 +152,7 @@
             this.label_MT3IDS.TabIndex = 7;
             this.label_MT3IDS.Text = "MT3LrSpCam";
             this.label_MT3IDS.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_MT3IDS.Click += new System.EventHandler(this.label_MT3IDS_Click);
             // 
             // label_KV1000SpCam
             // 
@@ -224,6 +225,7 @@
             this.label_MT3Wide.TabIndex = 10;
             this.label_MT3Wide.Text = "MT3Wide";
             this.label_MT3Wide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_MT3Wide.Click += new System.EventHandler(this.label_MT3Wide_Click);
             // 
             // timer_MT3Wide
             // 
@@ -231,11 +233,11 @@
             this.timer_MT3Wide.Interval = 6000;
             this.timer_MT3Wide.Tick += new System.EventHandler(this.timer_MT3Wide_Tick);
             // 
-            // timer11
+            // timer_NIR
             // 
-            this.timer11.Enabled = true;
-            this.timer11.Interval = 6000;
-            this.timer11.Tick += new System.EventHandler(this.timer_11_Tick);
+            this.timer_NIR.Enabled = true;
+            this.timer_NIR.Interval = 6000;
+            this.timer_NIR.Tick += new System.EventHandler(this.timer_NIR_Tick);
             // 
             // label_AnalogCamera
             // 
@@ -328,6 +330,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "I5-3450";
             // 
+            // label8
+            // 
+            this.label8.Image = global::MTmonitor.Properties.Resources.Green_button;
+            this.label8.Location = new System.Drawing.Point(298, 12);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(140, 140);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "KV1000SpCam2";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // timerPcCheck
             // 
             this.timerPcCheck.Enabled = true;
@@ -392,16 +404,6 @@
             this.label7.Size = new System.Drawing.Size(85, 14);
             this.label7.TabIndex = 24;
             this.label7.Text = "KV1000(MT3)";
-            // 
-            // label8
-            // 
-            this.label8.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label8.Location = new System.Drawing.Point(298, 12);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(140, 140);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "KV1000SpCam2";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timer_KV1000SpCam2
             // 
@@ -470,7 +472,7 @@
         private System.Windows.Forms.Timer timer_KV1000MT2;
         private System.Windows.Forms.Label label_MT3Wide;
         private System.Windows.Forms.Timer timer_MT3Wide;
-        private System.Windows.Forms.Timer timer11;
+        private System.Windows.Forms.Timer timer_NIR;
         private System.Windows.Forms.Label label_AnalogCamera;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.CheckBox checkBoxUseDate;
