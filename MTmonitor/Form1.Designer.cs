@@ -56,15 +56,17 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timerPcCheck = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label_NIR = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.timer_KV1000SpCam2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -86,7 +88,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(2, 185);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1466, 19);
+            this.textBox1.Size = new System.Drawing.Size(1620, 19);
             this.textBox1.TabIndex = 1;
             // 
             // label_KV1000MT2
@@ -112,7 +114,7 @@
             // label_SF
             // 
             this.label_SF.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_SF.Location = new System.Drawing.Point(1033, 17);
+            this.label_SF.Location = new System.Drawing.Point(1185, 17);
             this.label_SF.Name = "label_SF";
             this.label_SF.Size = new System.Drawing.Size(140, 140);
             this.label_SF.TabIndex = 4;
@@ -144,7 +146,7 @@
             this.label_MT3IDS.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_MT3IDS.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label_MT3IDS.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_MT3IDS.Location = new System.Drawing.Point(741, 15);
+            this.label_MT3IDS.Location = new System.Drawing.Point(893, 15);
             this.label_MT3IDS.Name = "label_MT3IDS";
             this.label_MT3IDS.Size = new System.Drawing.Size(140, 140);
             this.label_MT3IDS.TabIndex = 7;
@@ -216,7 +218,7 @@
             // label_MT3Wide
             // 
             this.label_MT3Wide.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_MT3Wide.Location = new System.Drawing.Point(887, 15);
+            this.label_MT3Wide.Location = new System.Drawing.Point(1039, 15);
             this.label_MT3Wide.Name = "label_MT3Wide";
             this.label_MT3Wide.Size = new System.Drawing.Size(140, 140);
             this.label_MT3Wide.TabIndex = 10;
@@ -238,7 +240,7 @@
             // label_AnalogCamera
             // 
             this.label_AnalogCamera.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_AnalogCamera.Location = new System.Drawing.Point(1328, 15);
+            this.label_AnalogCamera.Location = new System.Drawing.Point(1480, 15);
             this.label_AnalogCamera.Name = "label_AnalogCamera";
             this.label_AnalogCamera.Size = new System.Drawing.Size(140, 140);
             this.label_AnalogCamera.TabIndex = 11;
@@ -305,13 +307,23 @@
             this.panel1.Size = new System.Drawing.Size(427, 19);
             this.panel1.TabIndex = 17;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "SC440";
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label_NUV);
             this.groupBox1.Controls.Add(this.label_MT3Fine);
             this.groupBox1.Location = new System.Drawing.Point(434, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(304, 155);
+            this.groupBox1.Size = new System.Drawing.Size(454, 155);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "I5-3450";
@@ -326,25 +338,16 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("MS UI Gothic", 10F);
-            this.label2.Location = new System.Drawing.Point(1178, 2);
+            this.label2.Location = new System.Drawing.Point(1330, 2);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 14);
             this.label2.TabIndex = 19;
             this.label2.Text = "HP6200SFF";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "SC440";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1018, 3);
+            this.label4.Location = new System.Drawing.Point(1170, 3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 12);
             this.label4.TabIndex = 20;
@@ -353,7 +356,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(742, 3);
+            this.label5.Location = new System.Drawing.Point(894, 3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(50, 12);
             this.label5.TabIndex = 21;
@@ -362,7 +365,7 @@
             // label_NIR
             // 
             this.label_NIR.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_NIR.Location = new System.Drawing.Point(1179, 15);
+            this.label_NIR.Location = new System.Drawing.Point(1331, 15);
             this.label_NIR.Name = "label_NIR";
             this.label_NIR.Size = new System.Drawing.Size(140, 140);
             this.label_NIR.TabIndex = 22;
@@ -374,7 +377,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("MS UI Gothic", 10F);
-            this.label6.Location = new System.Drawing.Point(1327, 0);
+            this.label6.Location = new System.Drawing.Point(1479, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(55, 14);
             this.label6.TabIndex = 23;
@@ -384,17 +387,33 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("MS UI Gothic", 10F);
-            this.label7.Location = new System.Drawing.Point(1413, 0);
+            this.label7.Location = new System.Drawing.Point(1540, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(85, 14);
             this.label7.TabIndex = 24;
             this.label7.Text = "KV1000(MT3)";
             // 
+            // label8
+            // 
+            this.label8.Image = global::MTmonitor.Properties.Resources.Green_button;
+            this.label8.Location = new System.Drawing.Point(298, 12);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(140, 140);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "KV1000SpCam2";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timer_KV1000SpCam2
+            // 
+            this.timer_KV1000SpCam2.Enabled = true;
+            this.timer_KV1000SpCam2.Interval = 6000;
+            this.timer_KV1000SpCam2.Tick += new System.EventHandler(this.timer_KV1000SpCam2_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1469, 205);
+            this.ClientSize = new System.Drawing.Size(1623, 205);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label_NIR);
@@ -468,6 +487,8 @@
         private System.Windows.Forms.Label label_NIR;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Timer timer_KV1000SpCam2;
     }
 }
 

@@ -75,6 +75,7 @@ namespace MTmonitor
         MT3Wide,
         MT3liva1=11,
         MT3SF,
+        KV1000SpCam2,
         MT3NIR=15,
         MT3analog=20
     }
@@ -244,6 +245,31 @@ namespace MTmonitor
                     break;
                 case 2: //KV1000SpCam
                     label = label_KV1000SpCam;
+                    timer_KV1000SpCam.Stop(); timer_KV1000SpCam.Start();
+                    label.Text = "KV1000SpCam\n" + (kmd3.diskspace).ToString() + "GB";
+                    if (kmd3.obs == 0)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else if (kmd3.obs == 1)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
+                        label.ForeColor = Color.Red;
+                    }
+                    if (kmd3.diskspace <= 10)
+                    {
+                        label.Image = System.Drawing.Image.FromFile(@"Red_button.png");
+                        label.ForeColor = Color.Black;
+                    }
+                    break;
+                case (int)MT_MON_ID.KV1000SpCam2:
+                    label = label8;
                     timer_KV1000SpCam.Stop(); timer_KV1000SpCam.Start();
                     label.Text = "KV1000SpCam\n" + (kmd3.diskspace).ToString() + "GB";
                     if (kmd3.obs == 0)
@@ -614,7 +640,17 @@ namespace MTmonitor
                         label7.BackColor = SystemColors.Control;
                     }
                     break;
-
+/*                case 8: //KV1000SpCam-2
+                    if (mpd.pc_state == PC_STATE.NG)
+                    {
+                        label8.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        label8.BackColor = SystemColors.Control;
+                    }
+                    break;
+                    */
             }
             if (++ping_id > ping_id_max )
             {
@@ -672,6 +708,11 @@ namespace MTmonitor
         private void timer_KV1000SpCam_Tick(object sender, EventArgs e)
         {
             label_KV1000SpCam.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+        }
+ 
+        private void timer_KV1000SpCam2_Tick(object sender, EventArgs e)
+        {
+            label_8.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
         private void timer_FSI2_Tick(object sender, EventArgs e)
@@ -746,6 +787,7 @@ namespace MTmonitor
         {
             System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe","2C-41-38-AF-89-2B");
         }
+
  
     }
 }
