@@ -248,6 +248,7 @@
             this.label_AnalogCamera.TabIndex = 11;
             this.label_AnalogCamera.Text = "Analog Camera";
             this.label_AnalogCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_AnalogCamera.Click += new System.EventHandler(this.label_AnalogCamera_Click);
             // 
             // dateTimePicker1
             // 
@@ -355,6 +356,7 @@
             this.label2.Size = new System.Drawing.Size(77, 14);
             this.label2.TabIndex = 19;
             this.label2.Text = "HP6200SFF";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label4
             // 
@@ -364,6 +366,7 @@
             this.label4.Size = new System.Drawing.Size(64, 12);
             this.label4.TabIndex = 20;
             this.label4.Text = "TX100S3-B";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
@@ -373,6 +376,7 @@
             this.label5.Size = new System.Drawing.Size(50, 12);
             this.label5.TabIndex = 21;
             this.label5.Text = "TX100S3";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label_NIR
             // 
@@ -394,6 +398,7 @@
             this.label6.Size = new System.Drawing.Size(55, 14);
             this.label6.TabIndex = 23;
             this.label6.Text = "MJ34LL";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
             // 
