@@ -100,6 +100,8 @@ namespace MTmonitor
         public const int soft_max_number = 32;
         PC_STATE[] soft_alive_check = new PC_STATE[soft_max_number];
 
+        string WakeOnLanSoft = "C:\\Tool\\MagicSend.exe";
+
         public Form1()
         {
             InitializeComponent();
@@ -806,19 +808,19 @@ namespace MTmonitor
 
         private void label_NIR_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe","2C-41-38-AF-89-2B");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft,"2C-41-38-AF-89-2B");
             label1.Text = "MagicSend.exe HP8200SFF";
         }
 
         private void label_MT3IDS_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "00-19-99-D5-AD-01");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01");
             label1.Text = "MagicSend.exe TX100S3";
         }
 
         private void label_MT3Wide_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "00-19-99-D5-AD-01");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01");
             label1.Text = "MagicSend.exe TX100S3";
         }
 
@@ -829,25 +831,25 @@ namespace MTmonitor
         // MJ34LL
         private void label6_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "44-8A-5B-72-01-8A");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "44-8A-5B-72-01-8A");
             label1.Text = "MagicSend.exe MJ34LL";
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "2C-41-38-AF-89-2B");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "2C-41-38-AF-89-2B");
             label1.Text = "MagicSend.exe HP8200SFF";
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "90-1B-0E-0D-69-48");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "90-1B-0E-0D-69-48");
             label1.Text = "MagicSend.exe TX100S3-B";
         }
 
         private void label5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start("D:\\Tool\\MagicSend.exe", "00-19-99-D5-AD-01");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01");
             label1.Text = "MagicSend.exe TX100S3";
         }
 
