@@ -35,9 +35,9 @@ namespace MTmonitor
     [StructLayout(LayoutKind.Sequential)]
     public struct MT_MONITOR_DATA
     {
-        public Byte  id;        //unsigned char  Soft ID
-        public Byte  obs;       //unsigned char  観測中:1/0
-        public Byte  save;      //unsigned char  保存中:1/0
+        public Byte  id;        // unsigned char  Soft ID
+        public Byte  obs;       // unsigned char  観測停止:0 それ以外frame No.
+        public Byte  save;      // unsigned char  保存中:1/0
         public Int32 diskspace; // HDD残容量(MB)
     }
 
@@ -68,17 +68,21 @@ namespace MTmonitor
         AFP,         //0
         KV1000MT2,   //1
         KV1000SpCam, //2
-        FSI2,
-        MT3Fine,
-        MT3IDS,
-        PictureViewer,
-        MT3Wide,
-        MT3liva1=11,  //11
+        MT3LrSpcam,  //3
+        MT3Wide,     //4
+        reserve5,
+        reserve6,
+        MT3NUV,       //7
+        MT3Fine,      //8
+        reserve9,
+        MT2Wide,      //10
+        MT2Echelle,   //11
         MT3SF,        //12
         KV1000SpCam2, //13
-
-        MT3NIR=15,
-        MT3analog=20
+        FSI2,         //14
+        MT3NIR=15,    //15
+        MT3analog=20,
+        PictureViewer=102,
     }
 
     public partial class Form1 : Form
@@ -99,6 +103,7 @@ namespace MTmonitor
 
         public const int soft_max_number = 32;
         PC_STATE[] soft_alive_check = new PC_STATE[soft_max_number];
+        Byte[] pre_Obs_Num = new Byte[soft_max_number];
 
         string WakeOnLanSoft = "C:\\Tool\\MagicSend.exe";
 
@@ -199,7 +204,7 @@ namespace MTmonitor
             Label label = null;
             switch (kmd3.id)
             {
-                case 0: //AFP
+                case (int)MT_MON_ID.AFP: //AFP
                     label = label_AFP;
                     timer_AFP.Stop(); timer_AFP.Start();
                     label.Text = "AFP\n" + (kmd3.diskspace).ToString() + "GB";
@@ -225,7 +230,7 @@ namespace MTmonitor
                     }
                     soft_alive_check[0] = PC_STATE.OK;
                     break;
-                case 1: //KV1000MT2
+                case (int)MT_MON_ID.KV1000MT2: //KV1000MT2
                     label = label_KV1000MT2;
                     timer_KV1000MT2.Stop(); timer_KV1000MT2.Start();
                     label.Text = "KV1000MT2\n" + (kmd3.diskspace).ToString() + "GB";
@@ -251,10 +256,10 @@ namespace MTmonitor
                     }
                     soft_alive_check[1] = PC_STATE.OK;
                     break;
-                case 2: //KV1000SpCam
+                case (int)MT_MON_ID.KV1000SpCam: //KV1000SpCam
                     label = label_KV1000SpCam;
                     timer_KV1000SpCam.Stop(); timer_KV1000SpCam.Start();
-                    label.Text = "KV1000SpCam\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "KV1000SpCam\n"  + (kmd3.diskspace).ToString() + "GB";
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -265,7 +270,7 @@ namespace MTmonitor
                         label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
                         label.ForeColor = Color.Black;
                     }
-                    else
+                    else 
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Green_button.png");
                         label.ForeColor = Color.Red;
@@ -278,9 +283,9 @@ namespace MTmonitor
                     soft_alive_check[2] = PC_STATE.OK;
                     break;
                 case (int)MT_MON_ID.KV1000SpCam2:
-                    label = label8;
-                    timer_KV1000SpCam.Stop(); timer_KV1000SpCam.Start();
-                    label.Text = "KV1000SpCam\n" + (kmd3.diskspace).ToString() + "GB";
+                    label = label_KV1000SpCam2;
+                    timer_KV1000SpCam2.Stop(); timer_KV1000SpCam2.Start();
+                    label.Text = "KV1000SpCam2\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -303,10 +308,10 @@ namespace MTmonitor
                     }
                     soft_alive_check[(int)MT_MON_ID.KV1000SpCam2] = PC_STATE.OK;
                     break;
-                case 3: //NUV
+                case (int)MT_MON_ID.MT3NUV:
                     label = label_NUV;
-                    timer_FSI2.Stop(); timer_FSI2.Start();
-                    label.Text = "MT3_NUV\n" + (kmd3.diskspace).ToString() + "GB";
+                    timer_MT3NUV.Stop(); timer_MT3NUV.Start();
+                    label.Text = "MT3_NUV\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -329,10 +334,10 @@ namespace MTmonitor
                     }
                     soft_alive_check[3] = PC_STATE.OK;
                     break;
-                case 4: //MT3Fine
+                case (int)MT_MON_ID.MT3Fine:
                     label = label_MT3Fine;
                     timer_MT3Fine.Stop(); timer_MT3Fine.Start();
-                    label.Text = "MT3_Fine\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "MT3_Fine\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -355,9 +360,9 @@ namespace MTmonitor
                     }
                     soft_alive_check[4] = PC_STATE.OK;
                     break;
-                case 5: //MT3IDS
+                case (int)MT_MON_ID.MT3LrSpcam:
                     timer_MT3IDS.Stop(); timer_MT3IDS.Start();
-                    label_MT3IDS.Text = "MT3_LrSpcam\n" + (kmd3.diskspace).ToString() + "GB";
+                    label_MT3IDS.Text = "MT3_LrSpcam\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label_MT3IDS.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -380,9 +385,9 @@ namespace MTmonitor
                     }
                     soft_alive_check[5] = PC_STATE.OK;
                     break;
-                case 7: //MT3Wide
+                case (int)MT_MON_ID.MT3Wide: //MT3Wide
                     timer_MT3Wide.Stop(); timer_MT3Wide.Start();
-                    label_MT3Wide.Text = "MT3_Wide\n" + (kmd3.diskspace).ToString() + "GB";
+                    label_MT3Wide.Text = "MT3_Wide\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label_MT3Wide.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -409,7 +414,7 @@ namespace MTmonitor
                 case (int)MT_MON_ID.MT3SF:
                     label = label_SF;
                     timer_PictureViewer.Stop(); timer_PictureViewer.Start();
-                    label.Text = "MT3SF\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "MT3SF\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -437,7 +442,7 @@ namespace MTmonitor
                 case (int)MT_MON_ID.MT3NIR: //15
                     label = label_NIR;
                     timer_PictureViewer.Stop(); timer_PictureViewer.Start();
-                    label.Text = "MT3NIR\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "MT3NIR\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -461,10 +466,10 @@ namespace MTmonitor
                     soft_alive_check[(int)MT_MON_ID.MT3NIR] = PC_STATE.OK;
                     break;
 
-                case (int)MT_MON_ID.MT3analog: //20
-                    label = label_AnalogCamera;
+                case (int)MT_MON_ID.MT2Wide:
+                    label = label_MT2Wide;
                     timer_PictureViewer.Stop(); timer_PictureViewer.Start();
-                    label.Text = "MT3 Analog\n" + (kmd3.diskspace).ToString() + "GB";
+                    label.Text = "MT3 Analog\n" + (kmd3.diskspace).ToString() + "GB\n" + (kmd3.obs).ToString();
                     if (kmd3.obs == 0)
                     {
                         label.Image = System.Drawing.Image.FromFile(@"Orange_button.png");
@@ -679,7 +684,8 @@ namespace MTmonitor
         #region Timer
         private void button1_Click(object sender, EventArgs e)
         {
-            string st = "D:\\usr\\python\\dist\\MT3FileMove.exe";
+            //string st = "D:\\usr\\python\\dist\\MT3FileMove.exe";
+            string st = "C:\\Users\\root\\Documents\\Visual Studio 2015\\Projects\\MT3FileMove\\MT3FileMove\\dist\\MT3FileMove.exe";
             if (checkBoxUseDate.Checked)
             {
                 string st_param = dateTimePicker1.Value.Year.ToString() + " " + dateTimePicker1.Value.Month.ToString() + " " + dateTimePicker1.Value.Day.ToString()+" "+numericUpDown1.Value.ToString();
@@ -728,10 +734,10 @@ namespace MTmonitor
  
         private void timer_KV1000SpCam2_Tick(object sender, EventArgs e)
         {
-            label8.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+            label_KV1000SpCam2.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
 
-        private void timer_FSI2_Tick(object sender, EventArgs e)
+        private void timer_MT3NUV_Tick(object sender, EventArgs e)
         {
             label_NUV.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
@@ -742,13 +748,21 @@ namespace MTmonitor
 
         private void timer_NIR_Tick(object sender, EventArgs e)
         {
-            if (soft_alive_check[(int)MT_MON_ID.MT3analog] == PC_STATE.NG)
+            if (soft_alive_check[(int)MT_MON_ID.MT3NIR] == PC_STATE.NG)
             {
-                label_AnalogCamera.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+                label_NIR.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
             }
-            soft_alive_check[(int)MT_MON_ID.MT3analog] = PC_STATE.NG;
+            soft_alive_check[(int)MT_MON_ID.MT3NIR] = PC_STATE.NG;
 
             label_NIR.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+        }
+        private void timer_MT2Wide_Tick(object sender, EventArgs e)
+        {
+            label_MT2Wide.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
+        }
+        private void timer_MT2Echelle_Tick(object sender, EventArgs e)
+        {
+            label_MT2Echelle.Image = System.Drawing.Image.FromFile(@"Gray_button.png");
         }
         #endregion
 
@@ -809,7 +823,7 @@ namespace MTmonitor
         private void label_NIR_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft,"2C-41-38-AF-89-2B");
-            label1.Text = "MagicSend.exe HP8200SFF";
+            label1.Text = "MagicSend.exe HP6200SFF";
         }
 
         private void label_MT3IDS_Click(object sender, EventArgs e)
@@ -838,7 +852,7 @@ namespace MTmonitor
         private void label2_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "2C-41-38-AF-89-2B");
-            label1.Text = "MagicSend.exe HP8200SFF";
+            label1.Text = "MagicSend.exe HP6200SFF";
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -853,6 +867,7 @@ namespace MTmonitor
             label1.Text = "MagicSend.exe TX100S3";
         }
 
+       
  
     }
 }

@@ -44,12 +44,12 @@
             this.timer_PictureViewer = new System.Windows.Forms.Timer(this.components);
             this.timer_KV1000SpCam = new System.Windows.Forms.Timer(this.components);
             this.timer_AFP = new System.Windows.Forms.Timer(this.components);
-            this.timer_FSI2 = new System.Windows.Forms.Timer(this.components);
+            this.timer_MT3NUV = new System.Windows.Forms.Timer(this.components);
             this.timer_KV1000MT2 = new System.Windows.Forms.Timer(this.components);
             this.label_MT3Wide = new System.Windows.Forms.Label();
             this.timer_MT3Wide = new System.Windows.Forms.Timer(this.components);
             this.timer_NIR = new System.Windows.Forms.Timer(this.components);
-            this.label_AnalogCamera = new System.Windows.Forms.Label();
+            this.label_MT2Wide = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.checkBoxUseDate = new System.Windows.Forms.CheckBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -58,7 +58,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.label_KV1000SpCam2 = new System.Windows.Forms.Label();
             this.timerPcCheck = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -67,6 +67,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.timer_KV1000SpCam2 = new System.Windows.Forms.Timer(this.components);
+            this.label_MT2Echelle = new System.Windows.Forms.Label();
+            this.timer_MT2Wide = new System.Windows.Forms.Timer(this.components);
+            this.timer_MT2Echelle = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -88,7 +91,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(2, 185);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1620, 19);
+            this.textBox1.Size = new System.Drawing.Size(1789, 19);
             this.textBox1.TabIndex = 1;
             // 
             // label_KV1000MT2
@@ -204,11 +207,11 @@
             this.timer_AFP.Interval = 6000;
             this.timer_AFP.Tick += new System.EventHandler(this.timer_AFP_Tick);
             // 
-            // timer_FSI2
+            // timer_MT3NUV
             // 
-            this.timer_FSI2.Enabled = true;
-            this.timer_FSI2.Interval = 6000;
-            this.timer_FSI2.Tick += new System.EventHandler(this.timer_FSI2_Tick);
+            this.timer_MT3NUV.Enabled = true;
+            this.timer_MT3NUV.Interval = 6000;
+            this.timer_MT3NUV.Tick += new System.EventHandler(this.timer_MT3NUV_Tick);
             // 
             // timer_KV1000MT2
             // 
@@ -239,16 +242,16 @@
             this.timer_NIR.Interval = 6000;
             this.timer_NIR.Tick += new System.EventHandler(this.timer_NIR_Tick);
             // 
-            // label_AnalogCamera
+            // label_MT2Wide
             // 
-            this.label_AnalogCamera.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label_AnalogCamera.Location = new System.Drawing.Point(1480, 15);
-            this.label_AnalogCamera.Name = "label_AnalogCamera";
-            this.label_AnalogCamera.Size = new System.Drawing.Size(140, 140);
-            this.label_AnalogCamera.TabIndex = 11;
-            this.label_AnalogCamera.Text = "Analog Camera";
-            this.label_AnalogCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_AnalogCamera.Click += new System.EventHandler(this.label_AnalogCamera_Click);
+            this.label_MT2Wide.Image = global::MTmonitor.Properties.Resources.Green_button;
+            this.label_MT2Wide.Location = new System.Drawing.Point(1480, 15);
+            this.label_MT2Wide.Name = "label_MT2Wide";
+            this.label_MT2Wide.Size = new System.Drawing.Size(140, 140);
+            this.label_MT2Wide.TabIndex = 11;
+            this.label_MT2Wide.Text = "MT2Wide";
+            this.label_MT2Wide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_MT2Wide.Click += new System.EventHandler(this.label_AnalogCamera_Click);
             // 
             // dateTimePicker1
             // 
@@ -321,7 +324,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label_KV1000SpCam2);
             this.groupBox1.Controls.Add(this.label_NUV);
             this.groupBox1.Controls.Add(this.label_MT3Fine);
             this.groupBox1.Location = new System.Drawing.Point(434, 0);
@@ -331,15 +334,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "I5-3450";
             // 
-            // label8
+            // label_KV1000SpCam2
             // 
-            this.label8.Image = global::MTmonitor.Properties.Resources.Green_button;
-            this.label8.Location = new System.Drawing.Point(298, 12);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(140, 140);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "KV1000SpCam2";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_KV1000SpCam2.Image = global::MTmonitor.Properties.Resources.Green_button;
+            this.label_KV1000SpCam2.Location = new System.Drawing.Point(298, 12);
+            this.label_KV1000SpCam2.Name = "label_KV1000SpCam2";
+            this.label_KV1000SpCam2.Size = new System.Drawing.Size(140, 140);
+            this.label_KV1000SpCam2.TabIndex = 10;
+            this.label_KV1000SpCam2.Text = "KV1000SpCam2";
+            this.label_KV1000SpCam2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timerPcCheck
             // 
@@ -416,11 +419,34 @@
             this.timer_KV1000SpCam2.Interval = 6000;
             this.timer_KV1000SpCam2.Tick += new System.EventHandler(this.timer_KV1000SpCam2_Tick);
             // 
+            // label_MT2Echelle
+            // 
+            this.label_MT2Echelle.Image = global::MTmonitor.Properties.Resources.Green_button;
+            this.label_MT2Echelle.Location = new System.Drawing.Point(1626, 17);
+            this.label_MT2Echelle.Name = "label_MT2Echelle";
+            this.label_MT2Echelle.Size = new System.Drawing.Size(140, 140);
+            this.label_MT2Echelle.TabIndex = 25;
+            this.label_MT2Echelle.Text = "MT2Echelle";
+            this.label_MT2Echelle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timer_MT2Wide
+            // 
+            this.timer_MT2Wide.Enabled = true;
+            this.timer_MT2Wide.Interval = 6000;
+            this.timer_MT2Wide.Tick += new System.EventHandler(this.timer_MT2Wide_Tick);
+            // 
+            // timer_MT2Echelle
+            // 
+            this.timer_MT2Echelle.Enabled = true;
+            this.timer_MT2Echelle.Interval = 6000;
+            this.timer_MT2Echelle.Tick += new System.EventHandler(this.timer_MT2Echelle_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1623, 205);
+            this.ClientSize = new System.Drawing.Size(1792, 205);
+            this.Controls.Add(this.label_MT2Echelle);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label_NIR);
@@ -432,7 +458,7 @@
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.checkBoxUseDate);
             this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.label_AnalogCamera);
+            this.Controls.Add(this.label_MT2Wide);
             this.Controls.Add(this.label_MT3Wide);
             this.Controls.Add(this.label_KV1000SpCam);
             this.Controls.Add(this.label_MT3IDS);
@@ -473,12 +499,12 @@
         private System.Windows.Forms.Timer timer_PictureViewer;
         private System.Windows.Forms.Timer timer_KV1000SpCam;
         private System.Windows.Forms.Timer timer_AFP;
-        private System.Windows.Forms.Timer timer_FSI2;
+        private System.Windows.Forms.Timer timer_MT3NUV;
         private System.Windows.Forms.Timer timer_KV1000MT2;
         private System.Windows.Forms.Label label_MT3Wide;
         private System.Windows.Forms.Timer timer_MT3Wide;
         private System.Windows.Forms.Timer timer_NIR;
-        private System.Windows.Forms.Label label_AnalogCamera;
+        private System.Windows.Forms.Label label_MT2Wide;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.CheckBox checkBoxUseDate;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
@@ -494,8 +520,11 @@
         private System.Windows.Forms.Label label_NIR;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label_KV1000SpCam2;
         private System.Windows.Forms.Timer timer_KV1000SpCam2;
+        private System.Windows.Forms.Label label_MT2Echelle;
+        private System.Windows.Forms.Timer timer_MT2Wide;
+        private System.Windows.Forms.Timer timer_MT2Echelle;
     }
 }
 
