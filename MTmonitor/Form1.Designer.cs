@@ -70,6 +70,10 @@
             this.label_MT2Echelle = new System.Windows.Forms.Label();
             this.timer_MT2Wide = new System.Windows.Forms.Timer(this.components);
             this.timer_MT2Echelle = new System.Windows.Forms.Timer(this.components);
+            this.label_HP6300_1 = new System.Windows.Forms.Label();
+            this.label_HP6300_2 = new System.Windows.Forms.Label();
+            this.label_HP6300_3 = new System.Windows.Forms.Label();
+            this.label_all_pc = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -441,11 +445,59 @@
             this.timer_MT2Echelle.Interval = 6000;
             this.timer_MT2Echelle.Tick += new System.EventHandler(this.timer_MT2Echelle_Tick);
             // 
+            // label_HP6300_1
+            // 
+            this.label_HP6300_1.AutoSize = true;
+            this.label_HP6300_1.Font = new System.Drawing.Font("MS UI Gothic", 10F);
+            this.label_HP6300_1.Location = new System.Drawing.Point(1330, 168);
+            this.label_HP6300_1.Name = "label_HP6300_1";
+            this.label_HP6300_1.Size = new System.Drawing.Size(91, 14);
+            this.label_HP6300_1.TabIndex = 26;
+            this.label_HP6300_1.Text = "HP6300SFF-1";
+            this.label_HP6300_1.Click += new System.EventHandler(this.label_HP6300_1_Click);
+            // 
+            // label_HP6300_2
+            // 
+            this.label_HP6300_2.AutoSize = true;
+            this.label_HP6300_2.Font = new System.Drawing.Font("MS UI Gothic", 10F);
+            this.label_HP6300_2.Location = new System.Drawing.Point(1427, 168);
+            this.label_HP6300_2.Name = "label_HP6300_2";
+            this.label_HP6300_2.Size = new System.Drawing.Size(91, 14);
+            this.label_HP6300_2.TabIndex = 27;
+            this.label_HP6300_2.Text = "HP6300SFF-2";
+            this.label_HP6300_2.Click += new System.EventHandler(this.label_HP6300_2_Click);
+            // 
+            // label_HP6300_3
+            // 
+            this.label_HP6300_3.AutoSize = true;
+            this.label_HP6300_3.Font = new System.Drawing.Font("MS UI Gothic", 10F);
+            this.label_HP6300_3.Location = new System.Drawing.Point(1529, 168);
+            this.label_HP6300_3.Name = "label_HP6300_3";
+            this.label_HP6300_3.Size = new System.Drawing.Size(91, 14);
+            this.label_HP6300_3.TabIndex = 28;
+            this.label_HP6300_3.Text = "HP6300SFF-3";
+            this.label_HP6300_3.Click += new System.EventHandler(this.label_HP6300_3_Click);
+            // 
+            // label_all_pc
+            // 
+            this.label_all_pc.AutoSize = true;
+            this.label_all_pc.Font = new System.Drawing.Font("MS UI Gothic", 10F);
+            this.label_all_pc.Location = new System.Drawing.Point(1700, 2);
+            this.label_all_pc.Name = "label_all_pc";
+            this.label_all_pc.Size = new System.Drawing.Size(86, 14);
+            this.label_all_pc.TabIndex = 29;
+            this.label_all_pc.Text = "ALL PC WOL";
+            this.label_all_pc.Click += new System.EventHandler(this.label_all_pc_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1792, 205);
+            this.Controls.Add(this.label_all_pc);
+            this.Controls.Add(this.label_HP6300_3);
+            this.Controls.Add(this.label_HP6300_2);
+            this.Controls.Add(this.label_HP6300_1);
             this.Controls.Add(this.label_MT2Echelle);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -525,6 +577,10 @@
         private System.Windows.Forms.Label label_MT2Echelle;
         private System.Windows.Forms.Timer timer_MT2Wide;
         private System.Windows.Forms.Timer timer_MT2Echelle;
+        private System.Windows.Forms.Label label_HP6300_1;
+        private System.Windows.Forms.Label label_HP6300_2;
+        private System.Windows.Forms.Label label_HP6300_3;
+        private System.Windows.Forms.Label label_all_pc;
     }
 }
 
