@@ -74,6 +74,7 @@
             this.label_HP6300_2 = new System.Windows.Forms.Label();
             this.label_HP6300_3 = new System.Windows.Forms.Label();
             this.label_all_pc = new System.Windows.Forms.Label();
+            this.timer1Min = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -489,6 +490,12 @@
             this.label_all_pc.Text = "ALL PC WOL";
             this.label_all_pc.Click += new System.EventHandler(this.label_all_pc_Click);
             // 
+            // timer1Min
+            // 
+            this.timer1Min.Enabled = true;
+            this.timer1Min.Interval = 60000;
+            this.timer1Min.Tick += new System.EventHandler(this.timer1Min_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -581,6 +588,7 @@
         private System.Windows.Forms.Label label_HP6300_2;
         private System.Windows.Forms.Label label_HP6300_3;
         private System.Windows.Forms.Label label_all_pc;
+        private System.Windows.Forms.Timer timer1Min;
     }
 }
 

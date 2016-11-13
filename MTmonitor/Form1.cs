@@ -694,8 +694,11 @@ namespace MTmonitor
             }
             else
             {
-                //System.Diagnostics.Process.Start("D:\\usr\\python\\dist\\MT3FileMove.exe");
-                System.Diagnostics.Process.Start(st);
+                //org
+                //System.Diagnostics.Process.Start(st);
+
+                string st_param = DateTime.Today.ToString("yyyy MM dd ") + "2";
+                System.Diagnostics.Process.Start(st, st_param);
             }
 
             //button1.Image = System.Drawing.Image.FromFile(@"Red_button.png");
@@ -886,18 +889,28 @@ namespace MTmonitor
             label1.Text = "MagicSend.exe TX100S3";
         }
 
+
+        private void timer1Min_Tick(object sender, EventArgs e)
+        {
+            DateTime dt = DateTime.Now ;
+            if (dt.Minute == 0)
+            {
+                if (checkBoxUseDate.Checked) checkBoxUseDate.Checked = false;
+                button1_Click(sender, e);
+            }
+        }
+
         private void label_all_pc_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process p0 = System.Diagnostics.Process.Start(WakeOnLanSoft, "44-8A-5B-72-01-8A"); //MJ34LL
             System.Diagnostics.Process p1 = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01"); //TX100S3
             System.Diagnostics.Process p2 = System.Diagnostics.Process.Start(WakeOnLanSoft, "90-1B-0E-0D-69-48"); //TX100S3-B
-            System.Diagnostics.Process p3 = System.Diagnostics.Process.Start(WakeOnLanSoft, "90-1B-0E-0D-69-48"); //HP6200SFF
+            System.Diagnostics.Process p3 = System.Diagnostics.Process.Start(WakeOnLanSoft, "2C-41-38-AF-89-2B"); //HP6200SFF
             System.Diagnostics.Process p4 = System.Diagnostics.Process.Start(WakeOnLanSoft, "A0-D3-C1-32-6A-54"); //HP6300SFF-1
             System.Diagnostics.Process p5 = System.Diagnostics.Process.Start(WakeOnLanSoft, "74-46-A0-B2-07-0C"); //HP6300SFF-2
             System.Diagnostics.Process p6 = System.Diagnostics.Process.Start(WakeOnLanSoft, "B4-B5-2F-CD-FF-E1"); //HP6300SFF-3
             System.Diagnostics.Process p7 = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01"); //TX100S3
         }
-
 
     }
 }
