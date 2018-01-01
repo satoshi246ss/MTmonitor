@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
+using NLog;
 
 namespace MTmonitor
 {
@@ -87,6 +88,17 @@ namespace MTmonitor
 
     public partial class Form1 : Form
     {
+        // NLog
+        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        public static void NLogInfo(string message)
+        {
+            Logger.Info(message);
+        }
+        public static void NLogFatal(string message)
+        {
+            Logger.Fatal(message);
+        }
+
         //状態を表す定数
         const int OFF = 0;
         const int ON  = 1;
@@ -123,6 +135,8 @@ namespace MTmonitor
             worker_ping.WorkerSupportsCancellation = true;
             worker_ping.DoWork += new DoWorkEventHandler(worker_ping_DoWork);
             worker_ping.ProgressChanged += new ProgressChangedEventHandler(worker_ping_ProgressChanged);
+
+            NLogInfo("Start.");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -131,6 +145,7 @@ namespace MTmonitor
             button1.Image = System.Drawing.Image.FromFile(@"Green_button.png");
             //DriveInfo cDrive = new DriveInfo("C");
             //MessageBox.Show(cDrive.TotalFreeSpace.ToString());
+
         }
 
         #region UDP
@@ -866,32 +881,49 @@ namespace MTmonitor
 
         private void label_HP6300_1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "A0-D3-C1-32-6A-54");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "A0-D3-C1-32-6A-54"); //HP6300SFF-1
             label1.Text = "MagicSend.exe HP6300SFF-1";
         }
 
         private void label_HP6300_2_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "74-46-A0-B2-07-0C");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "74-46-A0-B2-07-0C"); //HP6300SFF-2
             label1.Text = "MagicSend.exe HP6300SFF-2";
         }
 
         private void label_HP6300_3_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "B4-B5-2F-CD-FF-E1");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "B4-B5-2F-CD-FF-E1"); //HP6300SFF-3
             label1.Text = "MagicSend.exe HP6300SFF-3";
         }
 
 
         private void label5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01");
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01"); //TX100S3
             label1.Text = "MagicSend.exe TX100S3";
         }
 
-
         private void timer1Min_Tick(object sender, EventArgs e)
         {
+            //J:ドライブの情報を取得する
+            System.IO.DriveInfo drive = new System.IO.DriveInfo("J");
+            //ドライブの準備ができているか調べる
+            if (drive.IsReady)
+            {
+                int hdd_space = (int)( drive.AvailableFreeSpace / (1024 * 1024 * 1024) );
+                label_hdd_info.Text= hdd_space.ToString() + " GB" ;
+
+                // 100GB以下なら赤色
+                if( hdd_space < 100 )
+                {
+                    label_hdd_info.ForeColor = Color.Red;
+                } else
+                {
+                    label_hdd_info.ForeColor = SystemColors.WindowText ;
+                }
+            }
+
             DateTime dt = DateTime.Now ;
             if (dt.Minute == 0)
             {
@@ -906,10 +938,11 @@ namespace MTmonitor
             System.Diagnostics.Process p1 = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01"); //TX100S3
             System.Diagnostics.Process p2 = System.Diagnostics.Process.Start(WakeOnLanSoft, "90-1B-0E-0D-69-48"); //TX100S3-B
             System.Diagnostics.Process p3 = System.Diagnostics.Process.Start(WakeOnLanSoft, "2C-41-38-AF-89-2B"); //HP6200SFF
-            System.Diagnostics.Process p4 = System.Diagnostics.Process.Start(WakeOnLanSoft, "A0-D3-C1-32-6A-54"); //HP6300SFF-1
-            System.Diagnostics.Process p5 = System.Diagnostics.Process.Start(WakeOnLanSoft, "74-46-A0-B2-07-0C"); //HP6300SFF-2
-            System.Diagnostics.Process p6 = System.Diagnostics.Process.Start(WakeOnLanSoft, "B4-B5-2F-CD-FF-E1"); //HP6300SFF-3
+            System.Diagnostics.Process p4 = System.Diagnostics.Process.Start(WakeOnLanSoft, "A0-D3-C1-32-6A-54"); //HP6300SFF-1 ID9 300mm IMX174C
+            System.Diagnostics.Process p5 = System.Diagnostics.Process.Start(WakeOnLanSoft, "74-46-A0-B2-07-0C"); //HP6300SFF-2 Riku PC
+            System.Diagnostics.Process p6 = System.Diagnostics.Process.Start(WakeOnLanSoft, "B4-B5-2F-CD-FF-E1"); //HP6300SFF-3 ID1 FishEye2 IMX174M
             System.Diagnostics.Process p7 = System.Diagnostics.Process.Start(WakeOnLanSoft, "00-19-99-D5-AD-01"); //TX100S3
+            System.Diagnostics.Process p8 = System.Diagnostics.Process.Start(WakeOnLanSoft, "BC-5F-F4-44-81-98"); //I5 - 3450
         }
 
     }

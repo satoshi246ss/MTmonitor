@@ -75,6 +75,7 @@
             this.label_HP6300_3 = new System.Windows.Forms.Label();
             this.label_all_pc = new System.Windows.Forms.Label();
             this.timer1Min = new System.Windows.Forms.Timer(this.components);
+            this.label_hdd_info = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -496,11 +497,22 @@
             this.timer1Min.Interval = 60000;
             this.timer1Min.Tick += new System.EventHandler(this.timer1Min_Tick);
             // 
+            // label_hdd_info
+            // 
+            this.label_hdd_info.AutoSize = true;
+            this.label_hdd_info.Font = new System.Drawing.Font("HGS創英角ｺﾞｼｯｸUB", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label_hdd_info.Location = new System.Drawing.Point(369, 155);
+            this.label_hdd_info.Name = "label_hdd_info";
+            this.label_hdd_info.Size = new System.Drawing.Size(66, 21);
+            this.label_hdd_info.TabIndex = 30;
+            this.label_hdd_info.Text = "label8";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1792, 205);
+            this.Controls.Add(this.label_hdd_info);
             this.Controls.Add(this.label_all_pc);
             this.Controls.Add(this.label_HP6300_3);
             this.Controls.Add(this.label_HP6300_2);
@@ -589,6 +601,7 @@
         private System.Windows.Forms.Label label_HP6300_3;
         private System.Windows.Forms.Label label_all_pc;
         private System.Windows.Forms.Timer timer1Min;
+        private System.Windows.Forms.Label label_hdd_info;
     }
 }
 
